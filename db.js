@@ -1,12 +1,37 @@
 const mongoose = require('mongoose');
-
-mongoose.set('strictQuery',true);
-mongoose.connect('mongodb://localhost:27017/blogApp',{
-    useNewUrlParser: true, 
+mongoose.connect('mongodb://localhost:27017/blogApp', {
+    useNewUrlParser: true,
     useUnifiedTopology: true,
-    family: 4,
-},
+  })
+    .then(() => {
+      console.log('Connected to MongoDB');
+    })
+    .catch((error) => {
+      console.error('Error connecting to MongoDB:', error);
+    });
+// // connection string
+// mongoose.connect("mongodb://localhost:27017/BLOGAPP",{
+// useNewUrlparser:true
+// })
+// definig model
+const Post=mongoose.model('blog',{
+   
+    title:String,
+    content:String,
+    username:String,
+  
+  
+})
+const Website = mongoose.model("Website", {
+  user_id: Number,
+  email: String,
+  password: String,
+ 
+});
 
 
-);
-module.exports = mongoose;
+
+module.exports={
+    Post,
+    Website
+}
