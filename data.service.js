@@ -3,6 +3,9 @@ const mongoose =require('./db.js');
 // const db = require("./Models/Post.js");
 const db = require("./db.js");
  // Replace with the correct path to your model file
+const jwt = require("jsonwebtoken");
+const ObjectId = require("mongodb").ObjectId
+
 
 
 
@@ -73,7 +76,7 @@ const login = (usid, pswd) => {
 };
 
 
-const addpost = ( title,content, username) => {
+const addpost = ( title,content, username,date) => {
   return db.Post.find({ 
   }).then((acc) => {
          
@@ -91,7 +94,8 @@ const addpost = ( title,content, username) => {
         
     title,
     content,
-    username
+    username,
+    date
           
         });
         accr.save();
@@ -124,9 +128,78 @@ const addpost = ( title,content, username) => {
     );
   };
     
+  const mypost = (username) => {
+    return db.Post.find(
+      {username}
+    ).then(
+      (result) => {
+        console.log(result);
+        if (result) {
+          return {
+            statusCode: 200,
+            blog: result
+          };
+        } else {
+          return {
+            statusCode: 404,
+            message: 'NO data Available'
+          };
+        }
+      }
+    );
+  };
+
+  const removenlog = (_id) => {
+    return db.Post.deleteOne(
+      {_id:new ObjectId(_id)}
+    ).then(
+      (result) => {
+        console.log(result);
+        if (result) {
+          return {
+            statusCode: 200,
+            blog: result
+          };
+        } else {
+          return {
+            statusCode: 404,
+            message: 'NO data Available'
+          };
+        }
+      }
+    );
+  };
+  const addc = (cmnt,user,_id) => {
+    console.log(_id)
+    return db.Post.findOne(
+      {_id:new ObjectId(_id)}
+    ).then(
+      (result) => {
+        console.log(result);
+        if (result) {
+          result.cmnt.push({
+            cmnt,
+            user,
+          })
+          result.save()
+          return {
+            statusCode: 200,
+            message: 'success'
+          };
+        } else {
+          return {
+            statusCode: 404,
+            message: 'Invalid'
+          };
+        }
+      }
+    );
+  };
+
   module.exports = {
    register,
    login,
    addpost,
    allpost,
+   mypost,removenlog,addc
   };

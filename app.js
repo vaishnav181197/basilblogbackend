@@ -30,7 +30,8 @@ app.post('/register',(req,res)=>{
 
 //login...............................................
 app.post('/login',(req,res)=>{
-    const result = dataservice.login(req.body.usid,req.body.pswd,)
+    const result = dataservice.login(req.body.usid,req.body.pswd)
+    console.log('log hit')
      // res.status(result.statusCode).json(result)
      result.then(resobj=>{
         res.status(resobj.statusCode).send(resobj);
@@ -43,7 +44,8 @@ app.post("/addpost", (req, res) => {
  
       req.body.title,
       req.body.content,
-      req.body.username
+      req.body.username,
+      req.body.date
       
     );
     console.log(req.body.title)
@@ -63,7 +65,31 @@ app.post("/addpost", (req, res) => {
   })
   
 
-
+  app.post("/getmypost",(req,res)=>{
+    dataservice.mypost(req.body.me).then(
+      (result)=>{
+        console.log(result)
+        res.status(result.statusCode).send(result)
+      }
+    )
+  })
+  app.post("/rmblog",(req,res)=>{
+    dataservice.removenlog(req.body._id).then(
+      (result)=>{
+        console.log(result)
+        res.status(result.statusCode).send(result)
+      }
+    )
+  })
+  app.post("/addcmnt",(req,res)=>{
+    dataservice.addc(req.body.cmnt,req.body.user,req.body._id).then(
+      (result)=>{
+        console.log(result)
+        res.status(result.statusCode).send(result)
+      }
+    )
+  })
+  
 
 
 

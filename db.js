@@ -19,11 +19,13 @@ const Post=mongoose.model('blog',{
     title:String,
     content:String,
     username:String,
+    date:String,
+    cmnt:[]
   
   
 })
 const Website = mongoose.model("Website", {
-  user_id: Number,
+  user_id: String,
   email: String,
   password: String,
  
